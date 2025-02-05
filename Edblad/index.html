@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="Logo Edblad.jpeg" type="image/x-icon">
+    <title>Horario de Obras</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <div id="loginContainer">
+        <h2>Iniciar Sesión</h2>
+        <button onclick="login()">Iniciar Sesión</button>
+    </div>
+
+    <div id="mainContent" style="display: none;">
+      
+        <button id="logoutButton" onclick="logout()">Cerrar Sesión</button>
+
+        <div id="obras"></div>
+
+        <div id="adminPanel">
+            <button onclick="guardarCambios()">Guardar Cambios</button>
+            <button onclick="agregarObra()">Añadir Obra</button>
+        </div>
+
+        <div id="logoContainer">
+          <img src="Logo Edblad.jpeg" alt="Logo de Edblad">
+      </div>
+      
+
+    </div>
+<script>
+    const admins = ["admin1", "admin2", "admin3"];
+let usuario = null;
+let esAdmin = false;
+
+document.addEventListener("DOMContentLoaded", () => {
+    cargarHorario(); // Cargar datos guardados al iniciar
+});
+
+function login() {
+    let userType = prompt("Seleccione su tipo de usuario: trabajador o administrador").toLowerCase();
+    if (userType === "administrador") {
+        let user = prompt("Ingrese su usuario");
+        if (admins.includes(user)) {
+            usuario = user;
+            esAdmin = true;
+            document.getElementById("adminPanel").style.display = "block";
+            document.getElementById("loginContainer").style.display = "none";
+            document.getElementById("mainContent").style.display = "block";
+        } else {
+            alert("Acceso denegado");
+        }
+    } else if (userType === "trabajador") {
+        usuario = "trabajador";
+        esAdmin = false;
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+    } else {
+        alert("Opción no válida");
+    }
+    
+}
+
+function agregarObra() {
+    if (!esAdmin) return;
+    let nombreObra = prompt("Ingrese el nombre de la nueva obra");
+    if (nombreObra) {
+        let idObra = 'obra' + Date.now();
+        let nuevaObra = document.createElement("div");
+        nuevaObra.classList.add("obra");
+        nuevaObra.innerHTML = `
+            <h3 onclick="toggleHorario('${idObra}')">${nombreObra}</h3>
+            <div id="${idObra}" class="horario">
+                <div contenteditable="true" class="editable" oninput="guardarCambios()">
+                    Nuevo trabajador - Nueva tarea
+                </div>
+                <button onclick="agregarTarea('${idObra}')">Añadir Tarea</button>
+            </div>`;
+        document.getElementById("obras").appendChild(nuevaObra);
+        guardarCambios(); // Guardar después de agregar una obra
+    }
+}
+
+function toggleHorario(id) {
+    let horario = document.getElementById(id);
+    horario.style.display = horario.style.display === "block" ? "none" : "block";
+}
+
+function agregarTarea(idObra) {
+    if (!esAdmin) return;
+    let nuevaTarea = prompt("Ingrese la nueva tarea para esta obra");
+    if (nuevaTarea) {
+        let divTarea = document.createElement("div");
+        divTarea.classList.add("editable");
+        divTarea.contentEditable = "true";
+        divTarea.innerText = nuevaTarea;
+        divTarea.setAttribute("oninput", "guardarCambios()");
+        document.getElementById(idObra).appendChild(divTarea);
+        guardarCambios(); // Guardar después de agregar una tarea
+    }
+}
+
+function guardarCambios() {
+    let obras = [];
+    document.querySelectorAll(".obra").forEach(obra => {
+        let nombreObra = obra.querySelector("h3").innerText;
+        let tareas = [];
+        obra.querySelectorAll(".editable").forEach(tarea => {
+            tareas.push(tarea.innerText);
+        });
+        obras.push({ nombre: nombreObra, tareas });
+    });
+
+    localStorage.setItem("horario", JSON.stringify(obras));
+}
+
+function cargarHorario() {
+    let datosGuardados = JSON.parse(localStorage.getItem("horario")) || [];
+    let obrasContainer = document.getElementById("obras");
+    obrasContainer.innerHTML = ""; // Limpiar antes de cargar
+
+    datosGuardados.forEach(obra => {
+        let idObra = 'obra' + Date.now();
+        let nuevaObra = document.createElement("div");
+        nuevaObra.classList.add("obra");
+        nuevaObra.innerHTML = `
+            <h3 onclick="toggleHorario('${idObra}')">${obra.nombre}</h3>
+            <div id="${idObra}" class="horario">
+                ${obra.tareas.map(tarea => 
+                    `<div contenteditable="true" class="editable" oninput="guardarCambios()">${tarea}</div>`
+                ).join("")}
+                <button onclick="agregarTarea('${idObra}')">Añadir Tarea</button>
+            </div>`;
+        obrasContainer.appendChild(nuevaObra);
+    });
+}
+
+function logout() {
+    usuario = null;
+    esAdmin = false;
+    document.getElementById("loginContainer").style.display = "flex";
+    document.getElementById("mainContent").style.display = "none";
+    document.getElementById("adminPanel").style.display = "none";
+}
+</script>
+
+</body>
+</html>
