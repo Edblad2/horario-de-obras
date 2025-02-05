@@ -1,0 +1,204 @@
+/* Estilos generales */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    text-align: center;
+}
+
+/* Cuadro del logo grande encima del login */
+#logoContainer {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease-in-out;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#logoContainer img {
+    width: 70px;
+    height: 50px;
+}
+
+/* Estilo del contenedor de inicio de sesión */
+#loginContainer {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: slideUp 1s ease-in-out;
+}
+
+button {
+    padding: 12px 25px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    font-size: 18px;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Estilo del contenedor principal después del inicio de sesión */
+#mainContent {
+    display: none;
+    text-align: center;
+    width: 90%;
+    max-width: 800px;
+    margin-top: 20px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Estilo del título principal "Horario de Obras" */
+#mainContent h1 {
+    font-family: 'Lobster', cursive;
+    font-size: 40px;
+    color: #007BFF;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    animation: bounceIn 1s ease-in-out;
+}
+
+#obras {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.obra {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+h3 {
+    cursor: pointer;
+    color: #333;
+    font-size: 22px;
+    font-weight: bold;
+    font-family: 'Cinzel', serif;
+    transition: color 0.3s ease-in-out;
+}
+
+h3:hover {
+    color: #007BFF;
+}
+
+.horario {
+    margin-top: 10px;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+}
+
+.editable {
+    border: 1px dashed #999;
+    padding: 8px;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+.editable:focus {
+    background: #eef7ff;
+    border-color: #007BFF;
+}
+
+/* Panel de administrador */
+#adminPanel {
+    display: none;
+    margin-top: 20px;
+}
+
+/* Cerrar sesión centrado abajo de las obras */
+/* Contenedor del botón de cerrar sesión */
+#logoutContainer {
+    margin-top: 50px;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Botón de cerrar sesión */
+#logoutButton {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #DC3545; /* Rojo */
+    color: white;
+    font-size: 18px;
+    transition: all 0.3s ease-in-out;
+}
+
+#logoutButton:hover {
+    background-color: #B22222; /* Rojo más oscuro */
+    transform: scale(1.05);
+}
+
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
